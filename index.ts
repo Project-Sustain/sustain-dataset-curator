@@ -1,4 +1,4 @@
-import config from "./config.json";
+import config from "./config";
 import csv = require('csv-parser');
 import fs = require('fs')
 
@@ -110,7 +110,12 @@ const cache: RelevantFieldCache = {};
                                 result += num;
                                 break;
                             case "DIVIDE":
-                                result /= num;
+                                if(result === 0 && num === 0) {
+                                    result = 0;
+                                }
+                                else {
+                                    result /= num;
+                                }
                                 break;
                             case "EXPONATE":
                                 result = Math.pow(result, num);
