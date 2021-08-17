@@ -62,5 +62,86 @@ const cache: RelevantFieldCache = {};
     }
     
     console.log("Cache is built, now building dataset")
+    fs.writeFileSync(outputFile, '')
+    fs.appendFileSync(outputFile, Object.keys(outputFields).join(',') + '\n');
+
+    type MathOperator = "TIMES" | "DIVIDE" | "ADD" | "SUBTRACT" | "EXPONATE" | null;
+
+    interface OutputField {
+        type: "copy" | "math",
+        input: "string" | ("number" | "string")[],
+        label?: "string",
+        toInt?: "FLOOR" | "ROUND"
+    }
+
+    for(const relevantFields of Object.values(cache)) {
+        let csvLine = '';
+        for(const outputField of Object.values(outputFields) as OutputField[]) {
+            if(outputField.type === 'copy' && typeof outputField.input === 'string') {
+                csvLine += relevantFields[outputField.input]
+            }
+            else if(outputField.type === 'math') {
+                let result: number = 0;
+                let recentOperator: MathOperator = null;
+                for(const step of outputField.input) {
+                    if(typeof step === 'string' && step.substring(0,2) === '@@') {
+                        const operator = step.substring(2, step.length);
+                        recentOperator = operator as MathOperator;
+                        continue;
+                    }
+
+                    let num: number;
+                    if(typeof step === 'number') {
+                        num = step;
+                    }
+                    else if(typeof relevantFields[step] === 'number') {
+                        num = relevantFields[step] as number;
+                    }
+                    else {
+                        throw `Couldnt find ${step} in\n${JSON.stringify(relevantFields, null, 4)}`
+                    }
+
+                    if(!recentOperator) {
+                        result = num;
+                    }
+                    else {
+                        switch(recentOperator) {
+                            case "ADD":
+                                result += num;
+                                break;
+                            case "DIVIDE":
+                                result /= num;
+                                break;
+                            case "EXPONATE":
+                                result = Math.pow(result, num);
+                                break;
+                            case "SUBTRACT":
+                                result -= num;
+                                break;
+                            case "TIMES":
+                                result *= num;
+                                break;
+                        }
+                    }
+                }
+
+                if(outputField.toInt) {
+                    switch(outputField.toInt) {
+                        case "FLOOR":
+                            result = Math.floor(result);
+                            break;
+                        case "ROUND":
+                            result = Math.round(result);
+                            break;
+                    }
+                }
+                
+                csvLine += result;
+            }
+            csvLine += ','
+        }
+        fs.appendFileSync(outputFile, csvLine.substring(0, csvLine.length - 1) + '\n')
+    }
+    console.log("Finished curating")
 })()
 

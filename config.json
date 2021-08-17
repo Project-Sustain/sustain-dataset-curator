@@ -14,12 +14,12 @@
             "type": "math",
             "input": [
                 "AL2FE002",
-                "@@DIVIDE@@",
+                "@@DIVIDE",
                 "AL2FE001",
-                "@@TIMES@@",
+                "@@TIMES",
                 1000
             ],
-            "toInt": "floor"
+            "toInt": "FLOOR"
         },
         "number_of_households": {
             "label": "Number of Households",
