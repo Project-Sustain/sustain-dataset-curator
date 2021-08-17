@@ -1,4 +1,6 @@
-const config = {
+import { ConfigInterface } from "./Curate";
+
+const config: ConfigInterface = {
     "inputFilenames": [
         "./temp/nhgis0056_ds244_20195_2019_tract.csv"
     ],
