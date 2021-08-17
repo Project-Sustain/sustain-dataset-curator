@@ -48,7 +48,7 @@ export default async function Curate(config: ConfigInterface) {
 
     const cache: RelevantFieldCache = {};
 
-    (async () => {
+    await (async () => {
         for (const inputFilename of inputFilenames) {
             await new Promise<void>(resolve => {
                 fs.createReadStream(inputFilename)
@@ -89,55 +89,8 @@ export default async function Curate(config: ConfigInterface) {
                 if (outputField.type === 'copy' && typeof outputField.input === 'string') {
                     csvLine += relevantFields[outputField.input]
                 }
-                else if (outputField.type === 'math') {
-                    let result: number = 0;
-                    let recentOperator: MathOperator = null;
-                    for (const step of outputField.input) {
-                        if (typeof step === 'string' && step.substring(0, 2) === '@@') {
-                            const operator = step.substring(2, step.length);
-                            recentOperator = operator as MathOperator;
-                            continue;
-                        }
-
-                        let num: number;
-                        if (typeof step === 'number') {
-                            num = step;
-                        }
-                        else if (typeof relevantFields[step] === 'number') {
-                            num = relevantFields[step] as number;
-                        }
-                        else {
-                            throw `Couldnt find ${step} in\n${JSON.stringify(relevantFields, null, 4)}`
-                        }
-
-                        if (!recentOperator) {
-                            result = num;
-                        }
-                        else {
-                            switch (recentOperator) {
-                                case "ADD":
-                                    result += num;
-                                    break;
-                                case "DIVIDE":
-                                    if (result === 0 && num === 0) {
-                                        result = 0;
-                                    }
-                                    else {
-                                        result /= num;
-                                    }
-                                    break;
-                                case "EXPONATE":
-                                    result = Math.pow(result, num);
-                                    break;
-                                case "SUBTRACT":
-                                    result -= num;
-                                    break;
-                                case "TIMES":
-                                    result *= num;
-                                    break;
-                            }
-                        }
-                    }
+                else if (outputField.type === 'math' && typeof outputField.input !== 'string') {
+                    let result = doTheMath(outputField.input, relevantFields)
 
                     if (outputField.toInt) {
                         switch (outputField.toInt) {
@@ -158,4 +111,64 @@ export default async function Curate(config: ConfigInterface) {
         }
         console.log("Finished curating")
     })()
+}
+
+const doTheMath = (arr: (string | number)[], relevantFields: {[key:string]: string | number}): number => {
+    const parenStart = '@@(';
+    const parenEnd = '@@)';
+    let indexOfParenStart = arr.indexOf(parenStart)
+    while (indexOfParenStart !== -1) {
+        arr.splice(indexOfParenStart)
+        indexOfParenStart = arr.indexOf(parenStart)
+    }
+
+    let result: number = 0;
+    let recentOperator: MathOperator = null;
+    for (const step of arr) {
+        if (typeof step === 'string' && step.substring(0, 2) === '@@') {
+            const operator = step.substring(2, step.length);
+            recentOperator = operator as MathOperator;
+            continue;
+        }
+
+        let num: number;
+        if (typeof step === 'number') {
+            num = step;
+        }
+        else if (typeof relevantFields[step] === 'number') {
+            num = relevantFields[step] as number;
+        }
+        else {
+            throw `Couldnt find ${step} in\n${JSON.stringify(relevantFields, null, 4)}`
+        }
+
+        if (!recentOperator) {
+            result = num;
+        }
+        else {
+            switch (recentOperator) {
+                case "ADD":
+                    result += num;
+                    break;
+                case "DIVIDE":
+                    if (result === 0 && num === 0) {
+                        result = 0;
+                    }
+                    else {
+                        result /= num;
+                    }
+                    break;
+                case "EXPONATE":
+                    result = Math.pow(result, num);
+                    break;
+                case "SUBTRACT":
+                    result -= num;
+                    break;
+                case "TIMES":
+                    result *= num;
+                    break;
+            }
+        }
+    }
+    return result;
 }

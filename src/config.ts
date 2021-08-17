@@ -1,5 +1,6 @@
 import { ConfigInterface } from "./Curate";
 
+//treat the filenames like you are in the ROOT of the project.
 const config: ConfigInterface = {
     "inputFilenames": [
         "./temp/nhgis0056_ds244_20195_2019_tract.csv"
