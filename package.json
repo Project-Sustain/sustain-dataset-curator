@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@types/node": "^16.6.1",
     "typescript": "^4.3.5"
   },
   "name": "sustain-dataset-curator",
@@ -18,5 +19,8 @@
     "url": "https://github.com/Project-Sustain/sustain-dataset-curator/issues"
   },
   "homepage": "https://github.com/Project-Sustain/sustain-dataset-curator#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "csv-parser": "^3.0.0"
+  }
 }

@@ -1,8 +1,13 @@
 {
-    "inputFilenames": [],
+    "inputFilenames": ["./temp/nhgis0056_ds244_20195_2019_county.csv"],
     "outputFile": "./out/out.csv",
     "joinField": "GISJOIN",
     "outputFields": {
-       
+       "with_an_internet_subscription_per_1000": {
+           "label": "Number of Households With an Internet Subscription per 1000 Households",
+           "type": "math",
+           "input": ["AL2FE002", "@@DIVIDE@@", "AL2FE001", "@@TIMES@@", 1000],
+           "toInt": "floor" 
+       }
     }
 }
