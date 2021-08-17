@@ -1,0 +1,8 @@
+{
+    "inputFilenames": [],
+    "outputFile": "./out/out.csv",
+    "joinField": "GISJOIN",
+    "outputFields": {
+       
+    }
+}
