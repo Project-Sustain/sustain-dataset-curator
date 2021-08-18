@@ -1,5 +1,5 @@
-item,itemCopy,remainingTommorow,profitPerDay
-milk,milk,0,150
-egg,egg,90,30
-cheese,cheese,49,4950
-chicken,chicken,1,200
+item,itemCopy,remainingTommorow,profitPerDay,tossedValue
+milk,milk,0,150,-300
+egg,egg,90,30,120
+cheese,cheese,49,4950,-89199
+chicken,chicken,1,200,-750

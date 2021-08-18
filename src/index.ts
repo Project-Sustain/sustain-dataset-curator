@@ -61,5 +61,35 @@ import config from "./config";
 import Curate from "./Curate";
 
 (async () => {
-    Curate(config);
+    Curate({
+        inputFilenames: ['./mock/tests.csv', './mock/tests2.csv'],
+        outputFile: './out/multiInputTestOutput.csv',
+        joinField: "item",
+        outputFields: {
+            item: {
+                type: 'copy',
+                input: 'item'
+            },
+            itemCopy: {
+                type: 'copy',
+                input: 'item'
+            },
+            remainingTommorow: {
+                type: 'math',
+                input: ['stock', '@@SUBTRACT', 'demand']
+            },
+            profitPerDay: {
+                type: 'math',
+                input: ['demand', '@@TIMES', 'price']
+            },
+            tossedValue: {
+                type: 'math',
+                input: ['stock', '@@SUBTRACT', '@@(', 'demand', '@@TIMES', 'expireTime', '@@)', '@@TIMES', 'price']
+            },
+            unstockedValue: {
+                type: 'math',
+                input: ['@@(', "price", "@@TIMES", "demand", "@@TIMES", "expireTime", "@@)", "@@SUBTRACT", '@@(', 'stock', '@@TIMES', 'price', '@@)']
+            }
+        }
+    });
 })()

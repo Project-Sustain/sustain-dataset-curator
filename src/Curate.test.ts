@@ -60,6 +60,11 @@ test('Curation multi input', async () => {
                 type: 'math',
                 input: ['stock', '@@SUBTRACT', '@@(', 'demand', '@@TIMES', 'expireTime', '@@)', '@@TIMES', 'price']
             }
+            // ,
+            // unstockedValue: {
+            //     type: 'math',
+            //     input: ['@@(', "price", "@@TIMES", "demand", "@@TIMES", "expireTime", "@@)", "@@SUBTRACT", '@@(', 'stock', '@@TIMES', 'price', '@@)']
+            // }
         }
     }
     await Curate(config)
