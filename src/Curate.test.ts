@@ -73,6 +73,18 @@ test('Curation multi input', async () => {
                 type: 'math',
                 input: [1, '@@DIVIDE', 4, '@@TIMES', 'price'],
                 toInt: 'FLOOR'
+            },
+            priceDoubledAdd: {
+                type: 'math',
+                input: ['price', '@@ADD', 'price']
+            },
+            priceSquared: {
+                type: 'math',
+                input: ['price', '@@EXPONATE', 2]
+            },
+            someNumber: {
+                type: 'math',
+                input: ['price', '@@ADD', '@@(','price','@@SUBTRACT','@@(','price','@@TIMES','price','@@)','@@)']
             }
         }
     }

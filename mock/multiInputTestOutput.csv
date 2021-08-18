@@ -1,5 +1,5 @@
-item,itemCopy,remainingTommorow,profitPerDay,tossedValue,unstockedValue,roundedOneQuarterPrice,flooredOneQuarterPrice
-milk,milk,0,150,-300,300,4,3
-egg,egg,90,30,120,-120,1,0
-cheese,cheese,49,4950,-89199,89199,25,24
-chicken,chicken,1,200,-750,750,13,12
+item,itemCopy,remainingTommorow,profitPerDay,tossedValue,unstockedValue,roundedOneQuarterPrice,flooredOneQuarterPrice,priceDoubledAdd,priceSquared,someNumber
+milk,milk,0,150,-300,300,4,3,30,225,-195
+egg,egg,90,30,120,-120,1,0,6,9,-3
+cheese,cheese,49,4950,-89199,89199,25,24,198,9801,-9603
+chicken,chicken,1,200,-750,750,13,12,100,2500,-2400
