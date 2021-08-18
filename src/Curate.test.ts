@@ -59,12 +59,21 @@ test('Curation multi input', async () => {
             tossedValue: {
                 type: 'math',
                 input: ['stock', '@@SUBTRACT', '@@(', 'demand', '@@TIMES', 'expireTime', '@@)', '@@TIMES', 'price']
+            },
+            unstockedValue: {
+                type: 'math',
+                input: ['@@(', "price", "@@TIMES", "demand", "@@TIMES", "expireTime", "@@)", "@@SUBTRACT", '@@(', 'stock', '@@TIMES', 'price', '@@)']
+            },
+            roundedOneQuarterPrice: {
+                type: 'math',
+                input: [1, '@@DIVIDE', 4, '@@TIMES', 'price'],
+                toInt: 'ROUND'
+            },
+            flooredOneQuarterPrice: {
+                type: 'math',
+                input: [1, '@@DIVIDE', 4, '@@TIMES', 'price'],
+                toInt: 'FLOOR'
             }
-            // ,
-            // unstockedValue: {
-            //     type: 'math',
-            //     input: ['@@(', "price", "@@TIMES", "demand", "@@TIMES", "expireTime", "@@)", "@@SUBTRACT", '@@(', 'stock', '@@TIMES', 'price', '@@)']
-            // }
         }
     }
     await Curate(config)
