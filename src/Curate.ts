@@ -118,16 +118,12 @@ const doTheMath = (arr: (string | number)[], relevantFields: {[key:string]: stri
     const parenEnd = '@@)';
     let indexOfParenStart = arr.lastIndexOf(parenStart)
     let indexOfLastParenEnd = arr.indexOf(parenEnd, indexOfParenStart)
-    console.log("before")
-    console.log(arr)
     arr = JSON.parse(JSON.stringify(arr))
     while (indexOfParenStart !== -1) {
         arr.splice(indexOfParenStart, indexOfLastParenEnd - indexOfParenStart + 1, doTheMath(arr.slice(indexOfParenStart + 1, indexOfLastParenEnd), relevantFields))
         indexOfParenStart = arr.lastIndexOf(parenStart)
         indexOfLastParenEnd = arr.indexOf(parenEnd, indexOfParenStart)
     }
-    console.log("after")
-    console.log(arr)
 
     let result: number = 0;
     let recentOperator: MathOperator = null;
